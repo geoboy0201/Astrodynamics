@@ -1,0 +1,12 @@
+clc;clear;
+aa = 800;
+ap = 500;
+rb = 6378.145;
+mu = 398600;
+[a e p h va vp] = orbitAltitudes(aa,ap,rb,mu);
+fprintf('a = %g km\n',a);
+fprintf('e = %g\n',e);
+fprintf('p = %g km\n',p);
+fprintf('h = %g km^2/s\n',h);
+fprintf('Va = %g km/s\n',va);
+fprintf('Vp = %g km/s\n',vp);
