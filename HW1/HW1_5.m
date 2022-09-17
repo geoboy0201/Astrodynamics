@@ -1,0 +1,10 @@
+clc;clear;
+v=7.5;
+r=9500;
+flightPath=18;
+gamma=deg2rad(flightPath);
+mu=398600;
+[nu e energy] = flightPathSpeedRadius(v,r,gamma,mu);
+fprintf('true anomaly = %g rad\n',nu);
+fprintf('e = %g\n',e);
+fprintf('orbital energy = %g kg km^2 s^-2\n',energy);

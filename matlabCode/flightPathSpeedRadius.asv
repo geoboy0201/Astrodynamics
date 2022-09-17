@@ -1,0 +1,15 @@
+function [nu e energy] = flightPathSpeedRadius(v,r,gamma,mu)
+    %This functions calculates true anomaly, eccentricity, and total energy given speed, flight path angle, and radius
+    %Function call: [nu e energy] = flightPathSpeedRadius(v,r,gamma,mu)
+    %
+    %Input: v, speed
+    %Input: r, radius
+    %Input: gamma, flight path angle
+    %Input: mu, gravitational parameter
+    %Output: nu, true anomaly
+    %Output: e, eccentricity
+    %Output: energy, total mechanical energy
+    
+    a = ((((v/sqrt(mu))^2)-(2/r))^-1)*-1;
+    trueAnomaly = @(x) (r*tan(gamma)*cos(x))/(sin(x
+end
