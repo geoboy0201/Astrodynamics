@@ -6,6 +6,7 @@ function [a e p h va vp] = orbitAltitudes(aa,ap,rb,mu)
     %Input: ap, altitude at periapsis
     %Input: rb, radius of body
     %Input: mu, gravitational parameter
+    %
     %Output: a, semi-major axis
     %Output: e, eccentricity
     %Output: p, semi-latus rectum

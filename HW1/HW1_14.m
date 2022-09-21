@@ -1,6 +1,6 @@
 clc;clear;
-rVec = [0 2 0];
-vVec = [(-1/sqrt(3)) (sqrt(2)/sqrt(3)) 0];
+rVec = [-0.6 -1 0.75];
+vVec = [0.8 -0.45 0.45];
 mu = 1;
 [hVec, eVec, hDote, p, a, nu] = positionVelocity(rVec, vVec, mu);
 fprintf('The specific angular momentum vector is: ');
