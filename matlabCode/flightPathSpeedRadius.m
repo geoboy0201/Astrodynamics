@@ -1,6 +1,6 @@
-function [nu e energy] = flightPathSpeedRadius(v,r,gamma,mu)
+function [nu, e, energy, p, h, rp, ra] = flightPathSpeedRadius(v,r,gamma,mu)
     %This functions calculates true anomaly, eccentricity, and total energy given speed, flight path angle, and radius
-    %Function call: [nu e energy] = flightPathSpeedRadius(v,r,gamma,mu)
+    %Function call: [nu e energy p h rp ra] = flightPathSpeedRadius(v,r,gamma,mu)
     %
     %Input: v, speed
     %Input: r, radius
@@ -9,13 +9,17 @@ function [nu e energy] = flightPathSpeedRadius(v,r,gamma,mu)
     %Output: nu, true anomaly
     %Output: e, eccentricity
     %Output: energy, total mechanical energy
+    %Output: p, semi-latus rectum
+    %Output: h, magnitude of the specific angular momentum
+    %Output: rp, periapsis radius
+    %Output: ra, apoapsis radius
     
     a = ((((v/sqrt(mu))^2)-(2/r))^-1)*-1;
-    
-    trueAnomaly = @(x) ((r*tan(gamma)*cos(x))/(sin(x)-tan(gamma)*cos(x)))+a*((tan(gamma))/(sin(x)-tan(gamma)*cos(x)))^2+(r-a);
-    nu = fzero(trueAnomaly,[0.0001 3.14]);
-    
-    e=(tan(gamma))/(sin(nu)-tan(gamma)*cos(nu));
-    
+    h = r*v*cos(gamma);
+    p = (h^2)/mu;
+    e=sqrt(1-(p/a));
+    nu = acos((p/(r*e))-(1/e));
     energy = -(mu)/(2*a);
+    rp = p/(1+e);
+    ra = p/(1-e);
 end

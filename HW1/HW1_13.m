@@ -1,0 +1,13 @@
+clc;clear;
+v = 0.8;
+gamma = 0;
+altitude = 4000;
+earthRadius = 6378.145;
+r = altitude+earthRadius;
+mu = 398600;
+[nu, e, energy, p, h, rp, ra] = flightPathSpeedRadius(v,r,gamma,mu);
+fprintf('orbital energy = %g kg km^2 s^-2\n',energy);
+fprintf('h = %g m^2/s\n',h);
+fprintf('p = %g km\n',p);
+fprintf('rp = %g km\n',rp);
+fprintf('ra = %g km\n',ra);
