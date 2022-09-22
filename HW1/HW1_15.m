@@ -4,3 +4,4 @@ trueAnomaly = 151;
 nu = deg2rad(trueAnomaly);
 v = 2.25;
 mu = 398600;
+[e, ap, vp] = radiusSpeedTrueAnomaly(r,v,nu,mu);
