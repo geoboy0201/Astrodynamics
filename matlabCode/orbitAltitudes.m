@@ -1,6 +1,6 @@
-function [a e p h va vp] = orbitAltitudes(aa,ap,rb,mu)
+function [a, e, p, h, va, vp] = orbitAltitudes(aa,ap,rb,mu)
     %This function calculates properties of a earth orbit with inputs of altitude at apoapsis and periapsis
-    %Function call: [a e p h va vp] = orbitAltitudes(aa,ap,rb,mu)
+    %Function call: [a, e, p, h, va, vp] = orbitAltitudes(aa,ap,rb,mu)
     %
     %Input: aa, altitude at apoapsis
     %Input: ap, altitude at periapsis

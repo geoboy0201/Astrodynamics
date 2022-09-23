@@ -1,0 +1,10 @@
+clc;clear;
+e = 0.1;
+ap = 370;
+rb = 6378.145;
+mu = 398600;
+[aa, energy, h, p] = periapsisAltEccentricity(ap,e,rb,mu);
+fprintf('apoapsis altitude = %g km\n',aa);
+fprintf('orbital energy = %g kg km^2 s^-2\n',energy);
+fprintf('h = %g m^2/s\n',h);
+fprintf('p = %g km\n',p);
