@@ -1,0 +1,15 @@
+clc;clear;
+mu = 1;
+rp = 10;
+a2 = 20;
+a1 = 15;
+e1 = 1-(rp/a1);
+e2 = 1-(rp/a2);
+ra1 = (a1*(1-e1^2))/(1-e1);
+ra2 = (a2*(1-e2^2))/(1-e2);
+vp1 = sqrt(mu)*sqrt((2/rp)-(1/a1));
+vp2 = sqrt(mu)*sqrt((2/rp)-(1/a2));
+va1 = sqrt(mu)*sqrt((2/ra1)-(1/a1));
+va2 = sqrt(mu)*sqrt((2/ra2)-(1/a2));
+fprintf('The speeds at apoapsis are %g and %g for orbits 1 and 2\n',va1,va2);
+fprintf('The speeds at periapsis are %g and %g for orbits 1 and 2\n',vp1,vp2);
