@@ -1,4 +1,4 @@
-clc;clear;
+clc;clear;close all;
 
 rvec = [5634.297397, -2522.807863, -5037.930889];
 vvec = [8.286176, 1.815144, 3.624759];
@@ -15,31 +15,26 @@ a = p/(1-e^2);
 tau = 2*pi*sqrt(a^3/mu);
 period = tau/3600;
 
-
-
-
-po = [rvec, vvec];
-trange = [0, period*3600];
-options = odeset('RelTol',1e-8);
-
-[t,p] = ode113(@twoBodyOde,trange,po,options,mu);
-figure
-plot3(p(:,1),p(:,2),p(:,3),'r')
-hold on
-c=[0,0];
-pos = [c-Re,2*Re,2*Re];
-rectangle('Position',pos,'Curvature',[1 1])
-hold on
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
-
-% Function which defines the ODE
-function pdot = twoBodyOde(t,p,mu)
-    pos = p(1:3);
-    vel = p(4:6);
-    rad = norm(pos,2);
-    posdot = vel;
-    veldot = -mu/(rad^3)*pos;
-    pdot = [posdot; veldot];
+nvec = cross([0,0,1],hvec);
+argPeriapsis = atan2(dot(evec,cross(hvec,nvec)),h*dot(evec,nvec));
+if argPeriapsis<0
+    argPeriapsis = argPeriapsis + (2*pi);
 end
+nuAscendingNode = (2*pi)-argPeriapsis;
+nuDescendingNode = nuAscendingNode + pi;
+
+N = [10,15,20,25];
+nu1 = nuAscendingNode;
+nu2 = nuDescendingNode;
+
+for i=1:length(N)
+    deltat(i) = timeChangeIntegral(@timeChangeIntegrand,nu1,nu2,p,e,mu,N);
+end
+
+nu = 0:0.1:2*pi;
+earth(length(nu))=Re;
+earth(:)=Re;
+orbitEquation = p./(1+e*cos(nu));
+polarplot(nu,orbitEquation,'r')
+hold on
+polarplot(nu,earth,'b')

@@ -11,6 +11,6 @@ function f = timeChangeIntegrand(nu,p,e,mu)
 % f: value of function at (nu,p,e,mu) %
 % --------------------------------------------------------------%
 
-f = (sqrt(mu*p)*(1+e*cos(nu))^2)/(p^2);
+f = (sqrt(mu*p)*(1+e*cos(nu)).^2)/(p^2);
 
 end
