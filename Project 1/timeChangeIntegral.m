@@ -29,7 +29,9 @@ function deltat = timeChangeIntegral(f,nu1,nu2,p,e,mu,N)
 % --------------------------------------------------------------%
 
 [nus,w] = GaussPointsWeights(nu1,nu2,N);
+nus=nus';
 F = f(nus,p,e,mu);
+F = F';
 deltat = w.'*F;
 
 end

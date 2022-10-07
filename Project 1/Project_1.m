@@ -26,14 +26,26 @@ nuDescendingNode = nuAscendingNode + pi;
 nu1rad = nuAscendingNode;
 nu2rad = nuDescendingNode;
 
-N = [10,15,20,25];
 nu1deg = rad2deg(nuAscendingNode);
 nu2deg = rad2deg(nuDescendingNode);
 
-deltat=zeros(length(N),0);
+N = [10,15,20,25];
+deltat=zeros(length(N),1);
 for i=1:length(N)
-    deltat(i) = timeChangeIntegral(@timeChangeIntegrand,nu1deg,nu2deg,p,e,mu,N);
+    deltat(i) = timeChangeIntegral(@timeChangeIntegrand,nu1rad,nu2rad,p,e,mu,N(i));
 end
+deltat = deltat/3600;
+
+nu1rad=nu1rad+2*pi;
+deltat2 = zeros(length(N),1);
+for i=1:length(N)
+    [nus,w] = GaussPointsWeights(nu2rad,nu1rad,N(i));
+    for j=1:N(i)
+        f = (p^2)/(sqrt(mu*p)*(1+e*cos(nus(j)))^2);
+        deltat2(i) = deltat2(i) + (f*w(j));
+    end
+end
+deltat2 = deltat2/3600;
 
 nu = 0:0.1:2*pi;
 earth(length(nu))=Re;
@@ -89,20 +101,20 @@ for i=1:length(N)
 end
 fprintf('----------------------------------------------------------\n');
 fprintf('----------------------------------------------------------\n');
-fprintf(' Part (d): Time change from nu2=%g deg to nu1=%g deg \n',nu2deg,nu1deg);
+fprintf(' Part (d): Time change from nu2=%g deg to nu1=%g deg \n',nu2deg,nu2deg+180);
 fprintf('----------------------------------------------------------\n');
 fprintf('----------------------------------------------------------\n');
-% for i=1:length(N),
-%   fprintf('Time elapsed (%i,%i) deg [hours] (N=%i):%15.8f\n',nu2deg,nu2deg+180,N(i),deltat2(i));
-% end
+for i=1:length(N)
+  fprintf('Time elapsed (%g,%g) deg [hours] (N=%i):%15.8f\n',nu2deg,nu2deg+180,N(i),deltat2(i));
+end
 fprintf('----------------------------------------------------------\n');
 fprintf('----------------------------------------------------------\n');
-fprintf(' Part (e): Please provide a written explanation indicating\n');
-fprintf(' anything that is interesting regarding the orbital period\n');
-fprintf(' that was computed in part (b) of this question. If more \n');
-fprintf(' lines of fprintf statements are needed, simply copy and \n');
-fprintf(' paste more fprintf statements to your code and continue \n');
-fprintf(' with your explanation. \n');
+fprintf(' Part (f): \n');
+fprintf(' The orbital period is half of the rotational period of   \n');
+fprintf(' earth. This means the spacecraft will orbit the earth    \n');
+fprintf(' twice everyday. It also means that the spacecraft will   \n');
+fprintf(' cross periapsis over the same two points everyday,       \n');
+fprintf(' switching back and forth between the two every crossing. \n');
 fprintf('----------------------------------------------------------\n');
 fprintf('----------------------------------------------------------\n');
 close all;
