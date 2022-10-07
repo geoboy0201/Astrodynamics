@@ -1,10 +1,12 @@
 clc;clear;close all;
 
+%Constants that are given
 rvec = [5634.297397, -2522.807863, -5037.930889];
 vvec = [8.286176, 1.815144, 3.624759];
 mu = 398600;
 Re = 6378.145;
 
+%Calculates p, e, and orbital period
 hvec = cross(rvec,vvec);
 h = norm(hvec);
 p = h^2/mu;
@@ -15,6 +17,8 @@ a = p/(1-e^2);
 tau = 2*pi*sqrt(a^3/mu);
 period = tau/3600;
 
+%Calculates the angles for ascending and descending nodes using argument of
+%periapsis
 nvec = cross([0,0,1],hvec);
 argPeriapsis = atan2(dot(evec,cross(hvec,nvec)),h*dot(evec,nvec));
 if argPeriapsis<0
@@ -23,12 +27,14 @@ end
 nuAscendingNode = (2*pi)-argPeriapsis;
 nuDescendingNode = nuAscendingNode + pi;
 
+%Names the angles as nu1 and nu2 in radians and degrees
 nu1rad = nuAscendingNode;
 nu2rad = nuDescendingNode;
-
 nu1deg = rad2deg(nuAscendingNode);
 nu2deg = rad2deg(nuDescendingNode);
 
+%Calculates deltat from ascending to descending node using functions from
+%problem 2
 N = [10,15,20,25];
 deltat=zeros(length(N),1);
 for i=1:length(N)
@@ -36,6 +42,8 @@ for i=1:length(N)
 end
 deltat = deltat/3600;
 
+%Calculates deltat from descending to ascending node only using
+%GaussPointsWeights()
 nu1rad=nu1rad+2*pi;
 deltat2 = zeros(length(N),1);
 for i=1:length(N)
@@ -47,6 +55,8 @@ for i=1:length(N)
 end
 deltat2 = deltat2/3600;
 
+%Plots the orbit using the orbit equation and the earth using the radius.
+%Also marks the ascending and descending nodes
 nu = 0:0.1:2*pi;
 earth(length(nu))=Re;
 earth(:)=Re;
@@ -57,6 +67,7 @@ polarplot(nu1rad,p/(1+e*cos(nu1rad)),'ro',nu2rad,p/(1+e*cos(nu2rad)),'rs')
 hold on
 polarplot(nu,earth,'b')
 
+%Prints the results from the calculations
 fprintf('----------------------------------------------------------\n');
 fprintf('----------------------------------------------------------\n');
 fprintf(' Part (a): \n');
@@ -112,9 +123,8 @@ fprintf('----------------------------------------------------------\n');
 fprintf(' Part (f): \n');
 fprintf(' The orbital period is half of the rotational period of   \n');
 fprintf(' earth. This means the spacecraft will orbit the earth    \n');
-fprintf(' twice everyday. It also means that the spacecraft will   \n');
-fprintf(' cross periapsis over the same two points everyday,       \n');
+fprintf(' twice every day. It also means that the spacecraft will   \n');
+fprintf(' cross periapsis over the same two points every day,       \n');
 fprintf(' switching back and forth between the two every crossing. \n');
 fprintf('----------------------------------------------------------\n');
 fprintf('----------------------------------------------------------\n');
-close all;
