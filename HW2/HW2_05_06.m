@@ -22,7 +22,7 @@ calculatedOE = [a; e; Omega; i; omega; nu];
 [calculatedRvec,calculatedVvec]  = oe2rv_Hackbardt_Chris(calculatedOE,mu);
 
 fprintf('Semi-Major Axis (a) [AU]: \t\t\t\t\t\t %16.8f\n',a);
-fprintf('Eccentricity (e) [AU]: \t\t\t\t\t\t\t %16.8f\n',e);
+fprintf('Eccentricity (e): \t\t\t\t\t\t\t %16.8f\n',e);
 fprintf('Longitude of the Ascending Node (Omega) [rad]:   %16.8f\n',Omega);
 fprintf('Orbital Inclination (i) [rad]: \t\t\t\t\t %16.8f\n',i);
 fprintf('Argument of the Periapsis (omega) [rad]:  \t\t %16.8f\n',omega);
