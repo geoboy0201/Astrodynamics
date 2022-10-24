@@ -13,19 +13,26 @@ Omega = deg2rad(Omega);
 i = deg2rad(i);
 omega = deg2rad(omega);
 
-hvecm = cell(0,length(nu));
-evecm = cell(0,length(nu));
-nvecm = cell(0,length(nu));
+hvecm = zeros(0,length(nu));
+evecm = zeros(0,length(nu));
+nvecm = zeros(0,length(nu));
+nvecx = zeros(0,length(nu));
+nvecy = zeros(0,length(nu));
 
 for i=1:length(nu)
     oe = [a; e; Omega; i; omega; nu(i)];
     [rvec,vvec]  = oe2rv_Hackbardt_Chris(oe,mu);
     hvec = cross(rvec,vvec);
     r = norm(rvec);
-    hvecm{i} = hvec;
-    evecm{i} = ((cross(vvec,hvec))/mu)-(rvec/r);
+    hvecm(i) = norm(hvec);
+    evecm(i) = norm(((cross(vvec,hvec))/mu)-(rvec/r));
     nvec = cross(Iz,hvec);
-    nvecm{i} = nvec;
+    nvecm(i) = norm(nvec);
+    nvecx(i) = nvec(1);
+    nvecy(i) = nvec(2);
 end
 
-plot(nu,hvecm)
+plot(nu,hvecm,nu,evecm,nu,nvecm)
+% plot(0,0,'o')
+% hold on
+% plot(nvecx,nvecy)
