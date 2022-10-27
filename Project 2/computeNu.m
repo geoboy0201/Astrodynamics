@@ -23,11 +23,15 @@ nuValues = zeros(0,length(tValues));
 e = oe(2);
 p = oe(1)*(1-e^2);
 nuValues(1)=oe(6);
+nu0=nuValues(1);
 
 for i=1:length(tValues)-1
+    nu0 = nuValues(i);
     t0 = tValues(i);
     t = tValues(i+1);
     nuValues(i+1) = rootFinder(@timeChangeIntegrand,t0,nu0,t,p,e,mu,N);
 end
+
+nuValues = nuValues';
 
 end

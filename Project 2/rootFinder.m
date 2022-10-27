@@ -29,18 +29,18 @@ function nu = rootFinder(f,t0,nu0,t,p,e,mu,N)
 % --------------------------------------------------------------%
 
 deltat = (t-t0);
-deltaNu = 5;
+deltaNu = deg2rad(5);
 guessNu = nu0+deltaNu;
 
 for i=1:20
-    [nus,w] = GaussPointsWeights(nu0,guessNu,N);
-    nus=nus';
-    F = f(nus,p,e,mu);
+    [theta,w] = GaussPointsWeights(nu0,guessNu,N);
+    theta=theta';
+    F = f(theta,p,e,mu);
     F = F';
     FofNu = w.'*F;
     
     GofNu = FofNu - deltat;
-    Gprime = f(nu,p,e,mu);
+    Gprime = f(guessNu,p,e,mu);
     
     guessNu = guessNu -(GofNu/Gprime);
 end
