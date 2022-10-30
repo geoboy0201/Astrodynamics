@@ -8,5 +8,4 @@ clf
 image('CData',earth,'XData',[-180 180],'YData',[90 -90])
 hold on
 plot(lonE*180/pi,lat*180/pi,'w*');
-
 end
