@@ -20,8 +20,8 @@ times=times';
 
 oe = rv2oe_Hackbardt_Chris(pos,vel,mu);
 nui=oe(6);
-tau=(2*pi)*sqrt(oe(1)^3/mu);
-radPerSec=(2*pi)/tau;
+a=oe(1);
+thetaDot=sqrt(mu/a^3);
 
 positions=zeros(N,3);
 velocities=zeros(N,3);
@@ -30,7 +30,7 @@ positions(1,:)=pos';
 velocities(1,:)=vel';
 
 for i=2:N
-    theta=radPerSec*(times(i)-times(i-1));
+    theta=thetaDot*(times(i)-times(i-1));
     nuOfT=nui+theta;
     oe(6)=nuOfT;
     [rPCI,vPCI]  = oe2rv_Hackbardt_Chris(oe,mu);
