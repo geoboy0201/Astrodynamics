@@ -35,9 +35,9 @@ for i=1:length(positions)
     figure(i)
     pandv=positions{i};
     plot3(pandv(:,1),pandv(:,2),pandv(:,3))
-    tf=times(length(pandv),i);
-    fprintf('%i) The postion and velocity at tf = %g sec is :\n',i,tf)
-    table = array2table(pandv(length(positions),:),"VariableNames",["X Position","Y Position","Z Position","X Velocity","Y Velocity","Z Velocity"])
+    title('ODE113 Plot')
+    tf=times(size(pandv,1),i);
+    fprintf('%i) The position and velocity at tf = %g sec is:\n',i,tf)
+    table = array2table([tf,pandv(size(pandv,1),:)],"VariableNames",["Time","X Position","Y Position","Z Position","X Velocity","Y Velocity","Z Velocity"])
     
 end
-close all;
