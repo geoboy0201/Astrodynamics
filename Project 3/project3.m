@@ -78,6 +78,12 @@ for m=1:length(omega)
 end
 omega90=lonLat{1,1}*180/pi;
 lat=omega90(:,2);
+lon=omega90(:,1);
+avgLon=mean(lon);
+avgLonCross=[];
+maxLat=max(lat);
+minLat=min(lat);
+cross=[];
 for n=2:length(lat)
     if lat(n)<0&&lat(n-1)>0
         pos2negLat=times(n);
@@ -85,7 +91,16 @@ for n=2:length(lat)
     if lat(n)>0&&lat(n-1)<0
         neg2posLat=times(n);
     end
+    if lon(n)>avgLon && lon(n-1)<avgLon && lat(n)/ maxLat< 0.9 && lat(n)/ minLat< 0.9
+        avgLonCross=[avgLonCross,times(n)];
+        cross = [cross;lon(n),lat(n)];
+    end
+    if lon(n)<avgLon && lon(n-1)>avgLon && lat(n)/ maxLat< 0.9 && lat(n)/ minLat< 0.9
+        avgLonCross=[avgLonCross,times(n)];
+        cross = [cross;lon(n),lat(n)];
+    end
 end
+timeInLoop90=period-(avgLonCross(2)-avgLonCross(1));
 if neg2posLat>pos2negLat
     timeInSouth90=period-(neg2posLat-pos2negLat);
     timeInNorth90=period-timeInSouth90;
@@ -96,6 +111,12 @@ end
 
 omega270=lonLat{2,1}*180/pi;
 lat=omega270(:,2);
+lon=omega270(:,1);
+avgLon=mean(lon);
+avgLonCross=[];
+maxLat=max(lat);
+minLat=min(lat);
+cross=[];
 for n=2:length(lat)
     if lat(n)<0&&lat(n-1)>0
         pos2negLat=times(n);
@@ -103,7 +124,16 @@ for n=2:length(lat)
     if lat(n)>0&&lat(n-1)<0
         neg2posLat=times(n);
     end
+    if lon(n)>avgLon && lon(n-1)<avgLon && lat(n)/ maxLat< 0.9 && lat(n)/ minLat< 0.9
+        avgLonCross=[avgLonCross,times(n)];
+        cross = [cross;lon(n),lat(n)];
+    end
+    if lon(n)<avgLon && lon(n-1)>avgLon && lat(n)/ maxLat< 0.9 && lat(n)/ minLat< 0.9
+        avgLonCross=[avgLonCross,times(n)];
+        cross = [cross;lon(n),lat(n)];
+    end
 end
+timeInLoop270=period-(avgLonCross(2)-avgLonCross(1));
 if neg2posLat>pos2negLat
     timeInSouth270=period-(neg2posLat-pos2negLat);
     timeInNorth270=period-timeInSouth270;
