@@ -1,4 +1,4 @@
-clc;clear;tic;close all;
+clc;clear;close all;
 period=24;%hours
 e=0.25;
 i=63.4;%degrees
@@ -76,6 +76,8 @@ for m=1:length(omega)
         ['\Omega = ',num2str(rad2deg(Omega(3))),'^{o}'],['\Omega = ',num2str(rad2deg(Omega(4))),'^{o}'],...
         ['\Omega = ',num2str(rad2deg(Omega(5))),'^{o}']},'Location','eastoutside')
 end
+
+%Calculates time in loop by finding the crossing point for omega=90
 omega90=lonLat{1,1}*180/pi;
 lat=omega90(:,2);
 lon=omega90(:,1);
@@ -109,6 +111,7 @@ else
     timeInNorth90=period-timeInSouth90;
 end
 
+%Calculates time in loop by finding the crossing point for omega=270
 omega270=lonLat{2,1}*180/pi;
 lat=omega270(:,2);
 lon=omega270(:,1);
@@ -141,5 +144,16 @@ else
     timeInSouth270=pos2negLat-neg2posLat;
     timeInNorth270=period-timeInSouth270;
 end
-%close all
-toc;
+
+%Print statements
+omegaLet=char(969);
+OmegaLet=char(937);
+fprintf(['Changing the argument of the periapsis, ' omegaLet ' ,rotates the orbit about the angular momentum vector, keeping the same orbital plane\n']);
+fprintf(['Changing the longitude of the ascending node, ' OmegaLet ' ,rotates the orbit about the z vector, which rotates the orbit around the planet\n']);
+fprintf(['An orbit of ' omegaLet ' = 270 and ' OmegaLet ' = 0 will spend most of its time over North America\n']);
+fprintf(['An orbit of ' omegaLet ' = 270 and ' OmegaLet ' = 180 will spend most of its time over Russia\n']);
+fprintf(['An orbit of ' omegaLet ' = 90 and ' OmegaLet ' = 45 will spend most of its time over Australia\n']);
+fprintf(['An orbit of ' omegaLet ' = 90 and ' OmegaLet ' = 180 will spend most of its time over South America\n']);
+fprintf(['A spacecraft with ' omegaLet ' = 270 spends most of its time in the northern hemisphere\n']);
+fprintf(['A spacecraft with ' omegaLet ' = 90 spends most of its time in the southern hemisphere\n']);
+fprintf('The spacecraft spends %g seconds on orbit between crossing point crossings\n',timeInLoop270);
