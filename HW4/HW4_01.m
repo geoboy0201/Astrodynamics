@@ -28,7 +28,6 @@ hold on
 p1H=dvH(R2);
 p1P=dvP(R2);
 p1E=zeros(length(R2),length(S));
-marker=['r','y','m','c','k','g'];
 for i=1:length(S)
     p1E(:,i)=dvE(R2,S(i))';
     plot(R2,p1E(:,i))
