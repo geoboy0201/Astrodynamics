@@ -16,7 +16,7 @@ for i=1:length(S)
     p1E(:,i)=dvE(R1,S(i))';
     plot(R1,p1E(:,i))
 end
-legend('','','','','','')
+legend('S=2','S=5','S=10','S=11','S=12','S=15','Location','southeast')
 plot(R1,p1H,'b','DisplayName','Hohmann')
 plot(R1,p1P,'r','DisplayName','Parabolic')
 xlabel('R')
@@ -32,7 +32,7 @@ for i=1:length(S)
     p1E(:,i)=dvE(R2,S(i))';
     plot(R2,p1E(:,i))
 end
-legend('','','','','','')
+legend('S=2','S=5','S=10','S=11','S=12','S=15','Location','southwest')
 plot(R2,p1H,'b','DisplayName','Hohmann')
 plot(R2,p1P,'r','DisplayName','Parabolic')
 xlabel('R')

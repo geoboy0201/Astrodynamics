@@ -32,7 +32,10 @@ radius2(:)=r2;
 
 hold on
 plot(x1,y1,x2,y2,xT,yT)
-quiver(xT(1),yT(1),0,dv1)
-quiver(xT(length(nuT)),yT(length(nuT)),0,-dv2)
+scale=10;
+quiver(xT(1),yT(1),0,dv1,scale)
+quiver(xT(length(nuT)),yT(length(nuT)),0,-dv2,scale)
 axis([-5 5 -5 5])
 set(gcf,'position',[300,300,500,500])
+title('Plot of Hohmann transfer')
+subtitle('Delta Vs not to scale')
