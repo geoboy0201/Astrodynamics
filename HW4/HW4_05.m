@@ -1,11 +1,11 @@
 clc;clear;
 %Defines givens
 mu=398600;
-r1=300+6378.145;
-i1=57;
+r1=350+6378.145;
+i1=28;
 i1=deg2rad(i1);
 e1=0;
-Omega1=60;
+Omega1=0;
 Omega1=deg2rad(Omega1);
 omega=0;
 
@@ -21,9 +21,9 @@ for i=1:length(nu)
 end
 
 %Calculates pos of second orbit
-i2=0;
-period=23.934*60*60;
-a2=(mu*(period/(2*pi))^2)^(1/3);
+i2=55;
+i2=deg2rad(i2);
+a2=26558;
 r2=a2;
 e2=0;
 Omega2=0;
@@ -75,10 +75,10 @@ deltaV2vec=V2aft-V2b4;
 %Calculates time and mass for transfer
 tauT=2*pi*sqrt(aT^3/mu);
 timeForTrans=tauT/2;
-g0=9.80665;
-Isp=320;
-massRatio1=exp(deltaV1/(g0*Isp));
-massRatio2=exp(deltaV2/(g0*Isp));
+
+%Calculates theta
+theta=acos((dot(hvec1,hvec2)/(norm(hvec1)*norm(hvec2))));
+theta=rad2deg(theta);
 
 %plots
 hold on
@@ -89,20 +89,21 @@ plot3(position1(:,1),position1(:,2),position1(:,3),position2(:,1),position2(:,2)
 plot3(positionT(:,1),positionT(:,2),positionT(:,3))
 quiver3(position1T(1),position1T(2),position1T(3),deltaV1vec(1),deltaV1vec(2),deltaV1vec(3),5000)
 quiver3(positionT(end,1),positionT(end,2),positionT(end,3),deltaV2vec(1),deltaV2vec(2),deltaV2vec(3),5000)
-axis([-50000 50000 -50000 50000 -50000 50000])
+axis([-30000 30000 -30000 30000 -30000 30000])
 title('View of the transfer between two circular orbits')
 subtitle('Delta Vs not to scale')
-view(-259.6770,16.8)
+view(62.1,16.85)
 
 %Prints results
 DeltaLet=char(916);
 subScr1=char(8321);
 subScr2=char(8322);
+fprintf('The line of intersection is along %g %g %g\n',lvec(1),lvec(2),lvec(3))
 fprintf(['The magnitude of ' DeltaLet 'V' subScr1 ' = %g km/s\n'],deltaV1)
 fprintf(['The magnitude of ' DeltaLet 'V' subScr2 ' = %g km/s\n'],deltaV2)
 fprintf(['The total ' DeltaLet 'V required is %g km/s\n'],deltaV1+deltaV2)
 fprintf('The transfer takes %g hours to complete\n',timeForTrans/3600)
-fprintf('The mass ratio for impulse 1 is %g\n',massRatio1)
-fprintf('The mass ratio for impulse 2 is %g\n',massRatio2)
-fprintf('Changing the longitude of the ascending node does change where the orbit transfer begins\n')
-fprintf('since that would rotate the orbit plane about the z-axis.\n')
+fprintf('The location of impulse one is: %g km %g km %g km\n',position1T(1),position1T(2),position1T(3))
+fprintf('The location of impulse two is: %g km %g km %g km\n',positionT(end,1),positionT(end,2),positionT(end,3))
+fprintf('The eccentricity of the transfer orbit is %g\n',eT)
+fprintf('Theta = %g deg',theta)
