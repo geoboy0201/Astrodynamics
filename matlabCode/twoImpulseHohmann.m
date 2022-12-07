@@ -12,7 +12,7 @@ function [posT,timeT,dV1,dV2]=twoImpulseHohmann(r1,r2,i1,i2,Omega1,Omega2,mu)
 %Input: mu, gravitaional parameter
 
 %Output: posT, 500x3 matrix containing postions along the transfer orbit
-%Output: timeT, times associated with positions in posT
+%Output: timeT, column matrix of times associated with positions in posT
 %Output: dV1, impulse at periapsis of transfer
 %Output: dV2, impulse at apoapsis of transfer
 
@@ -52,7 +52,7 @@ dV1=deltaV1*u1vec;
 V1aft=V1b4+dV1;
 
 tauT=2*pi*sqrt(aT^3/mu);
-timeT=linspace(0,tauT/2,500);
+timeT=linspace(0,tauT/2,500);   
 posT=zeros(length(timeT),3);
 for i=1:length(timeT)
     [r] = propagateKepler_Hackbardt_Chris(position1T,V1aft,0,timeT(i),mu);
