@@ -68,8 +68,8 @@ v2bf=sqrt(((2*mu)/r2)-(mu/aT));
 V2b4=-v2bf*u1vec;
 u2vec=-cross(hvec2,lvec)/norm(hvec2);
 V2aft=v2*u2vec;
-deltaV2=v2-v2bf;
 deltaV2vec=V2aft-V2b4;
+deltaV2=norm(deltaV2vec);
 
 %Calculates first impulse (changes i)
 oeT2=oeT;
@@ -81,7 +81,6 @@ velocity1T2=v';
 V1T2aft=velocity1T2;
 deltaV1T2vec=V1T2aft-V1b4;
 deltaV1T2=norm(deltaV1T2vec);
-oeT2(5)=pi;
 
 positionT2=zeros(length(nuT),3);
 velocityT2=zeros(length(nuT),3);
@@ -128,25 +127,14 @@ for i=1:length(percentInc)
     deltaVs(i)=deltaV1T3+deltaV2T3;
 end
 deltaVs=deltaVs/v1;
+minDV=min(deltaVs);
+mostEff=deltaVs==minDV;
+mostEff=percentInc(mostEff);
+
 figure(1)
 plot(percentInc,deltaVs)
-
-%plots
-figure(2)
-hold on
-scale=10;
-plot3(position1T(1),position1T(2),position1T(3),'r*')
-plot3(positionT(end,1),positionT(end,2),positionT(end,3),'r*')
-plot3(position1(:,1),position1(:,2),position1(:,3),position2(:,1),position2(:,2),position2(:,3))
-plot3(positionT(:,1),positionT(:,2),positionT(:,3),positionT2(:,1),positionT2(:,2),positionT2(:,3))
-quiver3(position1T(1),position1T(2),position1T(3),deltaV1vec(1),deltaV1vec(2),deltaV1vec(3),5000)
-quiver3(positionT(end,1),positionT(end,2),positionT(end,3),deltaV2vec(1),deltaV2vec(2),deltaV2vec(3),5000)
-quiver3(position1T2(1),position1T2(2),position1T2(3),deltaV1T2vec(1),deltaV1T2vec(2),deltaV1T2vec(3),5000)
-quiver3(positionT2(end,1),positionT2(end,2),positionT2(end,3),deltaV2T2vec(1),deltaV2T2vec(2),deltaV2T2vec(3),5000)
-axis([-50000 50000 -50000 50000 -50000 50000])
-title('View of the transfer between two circular orbits')
-subtitle('Delta Vs not to scale')
-view(-259.6770,16.8)
+xlabel('Percent of inclination change completed at periapsis of transfer orbit')
+ylabel('\DeltaV / vc1')
 
 %Prints results
 DeltaLet=char(916);
@@ -160,3 +148,5 @@ fprintf(2,'For a transfer with inclination change occuring at periapsis of trans
 fprintf(['The magnitude of ' DeltaLet 'V' subScr1 ' = %g km/s\n'],deltaV1T2)
 fprintf(['The magnitude of ' DeltaLet 'V' subScr2 ' = %g km/s\n'],deltaV2T2)
 fprintf(['The total ' DeltaLet 'V required is %g km/s\n'],deltaV1T2+deltaV2T2)
+fprintf('\n')
+fprintf(['The smallest total impulse occurs when f = %g with a value of ' DeltaLet 'V/vc1 = %g\n'],mostEff,minDV)
