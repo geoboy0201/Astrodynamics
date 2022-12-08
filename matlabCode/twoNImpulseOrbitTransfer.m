@@ -24,11 +24,13 @@ rn=[r1,rn];
 Omegan=[Omega1,Omegan];
 in=[i1,in];
 
+dOmega=Omegan(2)-Omegan(1);
+
 dVP=zeros(N,1);
 dVA=zeros(N,1);
 posT=[];
 velT=[];
-timeT=[];
+timeT=[0];
 
 N=1:N;
 for i=1:length(N)
@@ -36,14 +38,20 @@ for i=1:length(N)
     [post,velt,timet,dV1,dV2]=twoImpulseHohmann(rn(i),rn(i+1),in(i),in(i+1),Omegan(i),Omegan(i+1),mu);
     posT=[posT;post];
     velT=[velT;velt];
+    timet=timet+timeT(length(timeT));
     timeT=[timeT;timet'];
     dVP(i)=norm(dV1);
     dVA(i)=norm(dV2);
     %circular
+    if i<length(N)
     taut=2*pi*sqrt(rn(i+1)^3/mu);
-    [timet, post] = propagateOnCircle(post(end,:),velt(end,:)+dV2,timeT(end),timeT(end)+(taut/2),mu,500);
+    dOmegaTime=dOmega*sqrt(mu/rn(i+1)^3);
+    [timet, post] = propagateOnCircle(post(end,:),velt(end,:)+dV2,timeT(end),timeT(end)+(taut/2)+dOmegaTime,mu,500);
     posT=[posT;post];
     timeT=[timeT;timet];
+    end
 end
+
+timeT(1)=[];
 
 end

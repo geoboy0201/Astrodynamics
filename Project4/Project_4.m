@@ -13,7 +13,7 @@ i2=deg2rad(i2);
 Omega1=deg2rad(Omega1);
 Omega2=deg2rad(Omega2);
 
-[posT,timeT,dV1,dV2]=twoImpulseHohmann(r1,r2,i1,i2,Omega1,Omega2,mu);
+[posT,velT,timeT,dV1,dV2]=twoImpulseHohmann(r1,r2,i1,i2,Omega1,Omega2,mu);
 [posT2,timeT2,dVP2,dVA2]=twoNImpulseOrbitTransfer(r1,r2,i1,i2,Omega1,Omega2,4,mu);
 
 oe1=[r1,0,Omega1,i1,0,0];
@@ -27,7 +27,7 @@ tau2=2*pi*sqrt(r2^3/mu);
 
 hold on
 earthSphere
-plot3(posT2(:,1),posT2(:,2),posT2(:,3))
+plot3(posT2(:,1),posT2(:,2),posT2(:,3),'.')
 plot3(posT(:,1),posT(:,2),posT(:,3))
 plot3(positions1(:,1),positions1(:,2),positions1(:,3))
 plot3(positions2(:,1),positions2(:,2),positions2(:,3))
