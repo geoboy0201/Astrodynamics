@@ -1,4 +1,4 @@
-function [posT,timeT,dVP,dVA]=twoNImpulseOrbitTransfer(r1,r2,i1,i2,Omega1,Omega2,N,mu)
+function [posT,timeT,dVP,dVA,totDV]=twoNImpulseOrbitTransfer(r1,r2,i1,i2,Omega1,Omega2,N,mu)
 %This function calculates the impulses needed to complete N Hohmann
 %transfers
 
@@ -15,6 +15,7 @@ function [posT,timeT,dVP,dVA]=twoNImpulseOrbitTransfer(r1,r2,i1,i2,Omega1,Omega2
 %Output: timeT, column matrix of times associated with positions in posT
 %Output: dV1, impulse at periapsis of transfer
 %Output: dV2, impulse at apoapsis of transfer
+%Output: totDV, the total delta V required to complete the transfer
 
 rn=r1+((1:N)/N)*(r2-r1);
 Omegan=Omega1+((1:N)/N)*(Omega2-Omega1);
@@ -45,7 +46,7 @@ for i=1:length(N)
     %circular
     if i<length(N)
     taut=2*pi*sqrt(rn(i+1)^3/mu);
-    dOmegaTime=dOmega*sqrt(mu/rn(i+1)^3);
+    dOmegaTime=dOmega/sqrt(mu/rn(i+1)^3);
     [timet, post] = propagateOnCircle(post(end,:),velt(end,:)+dV2,timeT(end),timeT(end)+(taut/2)+dOmegaTime,mu,500);
     posT=[posT;post];
     timeT=[timeT;timet];
@@ -53,5 +54,20 @@ for i=1:length(N)
 end
 
 timeT(1)=[];
+
+totDV=sum(dVP)+sum(dVA);
+fprintf('The total time to complete the transfer is %g seconds or %g hours\n',timeT(end),timeT(end)/3600)
+
+%Plots 3D view of transfer
+hold on
+earthSphere
+plot3(posT(:,1),posT(:,2),posT(:,3))
+hold off
+
+%Plots the ground track;
+OmegaE = (2*pi)/((23*3600)+(56*60)+4);
+rvValuesECEF = eci2ecef(timeT,posT,OmegaE);
+[lonE,lat] = ecef2LonLat(rvValuesECEF);
+mercatorDisplay(lonE,lat)
 
 end
