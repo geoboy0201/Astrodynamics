@@ -1,4 +1,4 @@
-function [posT,timeT,dV1,dV2]=twoImpulseHohmann(r1,r2,i1,i2,Omega1,Omega2,mu)
+function [posT,velT,timeT,dV1,dV2]=twoImpulseHohmann(r1,r2,i1,i2,Omega1,Omega2,mu)
 
 %This function calculates the two impulses needed to complete a Hohmann
 %transfer
@@ -44,19 +44,21 @@ lvec=cross(hvec1,hvec2);
 lvec=lvec/norm(lvec);
 position1T=r1*lvec;
 aT=(r1+r2)/2;
-eT=(r2-r1)/(r2+r1);
 deltaV1=sqrt(((2*mu)/r1)-(mu/aT))-v1;
 u1vec=cross(hvec1,lvec)/norm(hvec1);
 V1b4=v1*u1vec;
 dV1=deltaV1*u1vec;
 V1aft=V1b4+dV1;
 
+M=500;
 tauT=2*pi*sqrt(aT^3/mu);
-timeT=linspace(0,tauT/2,500);   
+timeT=linspace(0,tauT/2,M);   
 posT=zeros(length(timeT),3);
+velT=zeros(length(timeT),3);
 for i=1:length(timeT)
-    [r] = propagateKepler_Hackbardt_Chris(position1T,V1aft,0,timeT(i),mu);
+    [r,v] = propagateKepler_Hackbardt_Chris(position1T,V1aft,0,timeT(i),mu);
     posT(i,:)=r';
+    velT(i,:)=v';
 end
 
 v2bf=sqrt(((2*mu)/r2)-(mu/aT));
@@ -64,6 +66,5 @@ V2b4=-v2bf*u1vec;
 u2vec=-cross(hvec2,lvec)/norm(hvec2);
 V2aft=v2*u2vec;
 dV2=V2aft-V2b4;
-deltaV2=norm(dV2);
 
 end
