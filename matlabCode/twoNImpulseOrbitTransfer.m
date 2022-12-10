@@ -59,6 +59,7 @@ totDV=sum(dVP)+sum(dVA);
 fprintf('The total time to complete the transfer is %g seconds or %g hours\n',timeT(end),timeT(end)/3600)
 
 %Plots 3D view of transfer
+figure
 hold on
 earthSphere
 plot3(posT(:,1),posT(:,2),posT(:,3))
@@ -68,6 +69,9 @@ hold off
 OmegaE = (2*pi)/((23*3600)+(56*60)+4);
 rvValuesECEF = eci2ecef(timeT,posT,OmegaE);
 [lonE,lat] = ecef2LonLat(rvValuesECEF);
-mercatorDisplay(lonE,lat)
-
+figure
+earth = imread('earth.jpg');
+hold on
+image('CData',earth,'XData',[-180 180],'YData',[90 -90])
+plot(lonE*180/pi,lat*180/pi,'r*');
 end
