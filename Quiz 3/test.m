@@ -1,17 +1,40 @@
-function [dv1,dv2,dv3,posT,time] = biEllipticWithPlaneChange(oei,oef,S,f,mu)
-%This function calculates the 3 impulses needed to complete a bi-elliptic orbit transfer
+clc;clear;close all;
+% posT1=[];
+% oe=[100000,0.7,0,pi/4,pi/2,0];
+% mu=398600;
+% nu=0:0.001:2*pi;
+% for i=1:length(nu)
+%     oe(6)=nu(i);
+%     [r,~] = oe2rv_Hackbardt_Chris(oe,mu);
+%     posT1(i,:)=r';
+% end
+% hold on
+% plot3(posT1(:,1),posT1(:,2),posT1(:,3),'.')
+% earthSphere
 
-%Input: oei, vector containing the orbital elements of the initial orbit
-%Input: oef, vector containing the orbital elements of the final orbit
-%Input: S, the ratio ri/rf. The ratio of apoapsis of transfer orbit to radius of final orbit
-%Input: f, fraction of orbit crank performed at first impulse
-%Input: mu, gravitaional constant
+mu=398600;
+r1=350+6378.145;
+i1=deg2rad(28);
+Omega1=deg2rad(60);
+oei=[r1,0,Omega1,i1,0,0];
 
-%Output: dv1, magnitude of impulse one
-%Output: dv2, magnitude of impulse two
-%Output: dv3, magnitude of impulse three
-%Output: posT, matrix containing position of transfer orbit
-%Output: time, vector containing times associated with postitions in posT
+r2=20200+6378.145;
+i2=deg2rad(57);
+Omega2=deg2rad(120);
+oef=[r2,0,Omega2,i2,0,0];
+
+[pos1,v1]  = oe2rv_Hackbardt_Chris(oei,mu);
+tau1=2*pi*sqrt(r1^3/mu);
+[times1, pos1, vel1] = propagateOnCircle(pos1,v1,0,tau1,mu,500);
+
+[pos2,v2]  = oe2rv_Hackbardt_Chris(oef,mu);
+tau2=2*pi*sqrt(r2^3/mu);
+[times2, pos2, vel2] = propagateOnCircle(pos2,v2,0,tau2,mu,500);
+
+S=2;
+f=0.5;
+
+%%
 [ri,vi] = oe2rv_Hackbardt_Chris(oei,mu);
 [rf,vf] = oe2rv_Hackbardt_Chris(oef,mu);
 hvec1=cross(ri,vi);
@@ -43,10 +66,11 @@ vel1T1=R*veldV1b4;
 vel1T1=(vel1T1/norm(vel1T1))*vpT1;
 
 oet1=rv2oe_Hackbardt_Chris(posdV1,vel1T1,mu);
-
 tauT1=2*pi*sqrt(oet1(1)^3/mu);
+
 timeT1=0:60:tauT1/2;
 for i=1:length(timeT1)
+    %oet1(6)=nut1(i);
     [r,v] = propagateKepler_Hackbardt_Chris(posdV1,vel1T1,0,timeT1(i),mu);
     posT1(i,:)=r';
     velT1(i,:)=v';
@@ -68,22 +92,31 @@ vel1T2dir=R*(vellastT1/norm(vellastT1));
 vel1T2=vel1T2dir*vAT2;
 oet2=rv2oe_Hackbardt_Chris(posdV2,vel1T2,mu);
 
-tauT2=2*pi*sqrt(oet2(1)^3/mu);
-timeT2=0:60:tauT2/2;
-for i=1:length(timeT2)
-    [r,v] = propagateKepler_Hackbardt_Chris(posdV2,vel1T2,0,timeT2(i),mu);
+nut2=pi:0.001:2*pi;
+for i=1:length(nut2)
+    oet2(6)=nut2(i);
+    [r,v] = oe2rv_Hackbardt_Chris(oet2,mu);
     posT2(i,:)=r';
     velT2(i,:)=v';
 end
 posT=[posT1;posT2];
-timeT2=timeT2+timeT1(end);
 vellastT2=velT2(end,:);
 
 %Finds the delta vs
 dv1=norm(vel1T1-veldV1b4);
 dv2=norm(vel1T2-vellastT1);
 dv3=norm(veldV3after-vellastT2');
-time=[timeT1';timeT2'];
+time=0;
+%%
+posdV3=posT2(end,:);
 
-
-end
+hold on
+earthSphere
+plot3(posT(:,1),posT(:,2),posT(:,3),'.')
+plot3(pos1(:,1),pos1(:,2),pos1(:,3),'.')
+plot3(pos2(:,1),pos2(:,2),pos2(:,3),'.')
+quiver3(posdV1(1),posdV1(2),posdV1(3),dv1(1),dv1(2),dv1(3),10000)
+quiver3(posdV2(1),posdV2(2),posdV2(3),dv2(1),dv2(2),dv2(3),10000)
+quiver3(posdV3(1),posdV3(2),posdV3(3),dv3(1),dv3(2),dv3(3),10000)
+quiver3(posdV3(1),posdV3(2),posdV3(3),veldV3after(1),veldV3after(2),veldV3after(3),10000)
+quiver3(posdV3(1),posdV3(2),posdV3(3),vellastT2(1),vellastT2(2),vellastT2(3),10000)
